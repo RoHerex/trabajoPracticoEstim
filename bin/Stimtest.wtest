@@ -1,0 +1,116 @@
+import example.*
+
+describe "jueguitos de estim"{
+	
+	
+const gta = new Juego(precioDolares = 40, lenguajeInapropiado = false, contieneViolencia = true, tematicasParaAdultos = true, pagoCritica = true )
+const melda = new Juego(precioDolares = 60, lenguajeInapropiado = false, contieneViolencia = true, tematicasParaAdultos = false, pagoCritica = true )
+const sanic = new Juego(precioDolares = 70, lenguajeInapropiado = false, contieneViolencia = false, tematicasParaAdultos = false, pagoCritica = false  )
+const samuelBros = new Juego(precioDolares = 50, lenguajeInapropiado = false, contieneViolencia = false, tematicasParaAdultos = false,pagoCritica = true )
+	
+const shetix = new Usuario(esCriticaPositiva = false)
+const wally = new Usuario(esCriticaPositiva = true)
+const megaCritic = new CriticosPagos(esCriticaPositiva = true ,texto = "mmm mmm mmm")
+const tintendo = new Revista(esCriticaPositiva = true ,texto = "")	
+	
+const argentina = new Pais(equivalenciaADolar = 200)
+
+
+
+test "descuentitos" {
+	
+	assert.equals(40,gta.precioDolares())
+	assert.equals(30,gta.descuentoDirecto(25))
+	assert.equals(20,gta.descuentoFijo(50))
+	assert.equals(0,gta.gratis())
+
+
+   }
+   
+test "el mas carito"{
+	
+	    estim.aniadir(melda)
+		estim.aniadir(sanic)
+		estim.aniadir(gta)
+	
+	assert.equals(sanic ,estim.juegoMasCaro())
+	assert.equals([30,35],estim.descuentoDeterminado(50))
+	assert.equals([30,35],estim.validarDescuento(50))
+	
+	
+}
+
+test "normas videoJuegos Argentina"{
+	
+	
+	
+	assert.equals(12000,argentina.convertirDolares(melda.precioDolares()))
+	
+	assert.that(sanic.esParaMenores())
+	assert.notThat(gta.esParaMenores())
+	
+}
+
+test"jueguitos para menores de edad"{
+	
+	    estim.aniadir(melda)
+		estim.aniadir(sanic)
+		estim.aniadir(gta)
+		estim.aniadir(samuelBros)
+		
+	
+	assert.equals([sanic,samuelBros],estim.juegosParaMenores())
+    assert.equals(120,estim.promedioDeJuegosParaMenores())
+	assert.equals(24000,argentina.promedioParaMenoresAMonedaLocal())
+	
+}
+
+test "critico usuario"{
+	
+	shetix.cambiarCritica()
+	assert.that(shetix.esCriticaPositiva())
+} 
+
+
+test "critica de sanic"{
+	
+	sanic.recibirCritica(shetix)
+	shetix.cambiarCritica()
+	sanic.recibirCritica(wally)
+	sanic.recibirCritica(megaCritic)
+	megaCritic.esCriticaPositiva(sanic)
+	tintendo.esCriticaPositiva()
+	assert.notThat(sanic.superaLaCantDeCriticasPositivas(3))
+	assert.notThat(sanic.juegoGalardonado())
+	assert.equals([shetix,wally],sanic.cantidadNotasPositivas())
+	
+}
+
+test"criticasDeMelda"{
+	
+	sanic.recibirCritica(shetix)
+	shetix.cambiarCritica()
+	sanic.recibirCritica(wally)
+	megaCritic.esCriticaPositiva(sanic)
+	tintendo.esCriticaPositiva()
+
+	assert.that(melda.juegoGalardonado())
+	assert.notThat(melda.tieneCriticosLiterarios())
+	
+	
+}
+
+test" la revista"{
+	
+	tintendo.unirMiembro(megaCritic)
+	tintendo.unirMiembro(shetix)
+	tintendo.unirMiembro(wally)
+	
+	assert.equals(1,tintendo.cantidadCriticasNegativas())
+	assert.equals(2,tintendo.cantidadCriticasPositivas())
+	
+	assert.that(tintendo.esCriticaPositiva())
+	
+}
+
+}
